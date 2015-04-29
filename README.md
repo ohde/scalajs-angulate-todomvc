@@ -1,11 +1,9 @@
 # scalajs-angulate-todomvc
-This is an implementation of the [TodoMVC](http://todomvc.com/) app using [scalajs-angulate](https://github.com/jokade/scalajs-angulate).
-
-The client is an adaptation of the [scalajs-angular-todomvc](https://github.com/greencatsoft/scalajs-angular-todomvc) example written by [Xavier Cho](https://github.com/mysticfall). The server is a simple [akka-http](http://akka.io) application (using a tiny abstraction layer called [surf](https://github.com/jokade/surf)).
+Implementation of the [TodoMVC](http://todomvc.com/) App using [scalajs-angulate](https://github.com/jokade/scalajs-angulate) based off [scalajs-angulate-todomvc](https://github.com/jokade/scalajs-angulate-todomvc)
 
 ## Running the Application
 ```shell
-$ sbt
-> run
+$ sbt compile
 ```
-Open `http://localhost:8081` in your browser.
+
+Open `file:///C:/.../scalajs-angulate-prickle-todomvc/web/index.html` in your browser.

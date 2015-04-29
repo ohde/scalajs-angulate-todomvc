@@ -11,7 +11,19 @@ import scala.scalajs.js.annotation.{JSExportAll, JSExport}
 import scala.scalajs.js.{Function, UndefOr, Dictionary}
 
 class TodoItemDirective extends Directive {
-  override val templateUrl = "/web/todo-item.html"
+  override val template = """
+    <div class="view">
+      <input class="toggle" type="checkbox" ng-model="todo.completed"
+             ng-change="fireOnChange()" />
+      <label ng-dblclick="directive.onEditStart()" ng-show="!editing">{{todo.title}}</label>
+      <button class="destroy" ng-click="fireOnRemove()"></button>
+    </div>
+      <form ng-submit="directive.onEditEnd()">
+        <input class="edit" ng-trim="false" ng-model="title"
+               ng-blur="directive.onEditEnd()"
+               todo-escape="directive.onEditCancel()" todo-focus="editing" ng-show="editing" />
+      </form>
+  """
 
   override def isolateScope: Dictionary[String] = js.Dictionary(
     "todo" -> "=item",

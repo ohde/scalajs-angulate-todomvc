@@ -6,13 +6,12 @@ import biz.enef.angular.core.Location
 import biz.enef.angular.{Scope, Controller}
 
 import scala.scalajs.js
-import scala.scalajs.js.UndefOr
 import js.Dynamic.literal
-import scala.util.{Failure, Success}
 
-class TodoCtrl(taskService: TaskService, $location: Location, $scope: Scope) extends Controller {
+class TodoCtrl($location: Location, $scope: Scope) extends Controller {
   val $dynamicScope = $scope.asInstanceOf[js.Dynamic]
   var todos = js.Array[Task]()
+  var incrementer = 0;
   var newTitle = ""
   var allChecked = true
   var remainingCount = 0
@@ -27,64 +26,41 @@ class TodoCtrl(taskService: TaskService, $location: Location, $scope: Scope) ext
     }
   )
 
-  taskService.findAll() onComplete {
-    case Success(res) =>
-      todos = res
-      update()
-    case Failure(ex) => handleError(ex)
-  }
-
-  def save(todo: Task): Unit = taskService.update(todo) onComplete {
-    case Success(_) => update()
-    case Failure(ex) => handleError(ex)
-  }
+  def save(todo: Task): Unit = update()
 
   def add(): Unit = {
     val title = newTitle.trim
-    if(title != "") add(Task(title))
+    incrementer = incrementer + 1
+    if(title != "") add(Task(title, false, incrementer))
   }
 
   private def add(todo: Task): Unit = {
-    taskService.create(todo) onComplete {
-      case Success(newTask) =>
-        todos :+= newTask
-        newTitle = ""
-        update()
-      case Failure(ex) => handleError(ex)
-    }
+      todos :+= todo
+      newTitle = ""
+      update()
   }
 
   def remove(todo: Task): Unit = {
-    taskService.delete(todo).onComplete {
-      case Success(_) =>
-        todos = todos.filter( _.id != todo.id )
-        update()
-      case Failure(ex) => handleError(ex)
-    }
+    todos = todos.filter( _.id != todo.id )
+    update()
   }
 
   def clearCompleted(): Unit = {
-    taskService.clearCompleted() onComplete {
-      case Success(_) =>
-        todos = todos.filter( !_.completed )
-        update()
-      case Failure(ex) => handleError(ex)
-    }
+    todos = todos.filter( !_.completed )
+    update()
   }
 
-  def markAll(completed: Boolean): Unit = taskService.markAll(completed) onComplete {
-    case Success(_) =>
-      todos.foreach( _.completed = completed )
-      update()
-    case Failure(ex) => handleError(ex)
+  def markAll(completed: Boolean): Unit = {
+    todos.foreach( _.completed = completed)
+    update()
   }
-
 
   private def update(): Unit = {
+    inConsole(todos)
     remainingCount = todos.count(! _.completed)
     allChecked = remainingCount == 0
   }
 
-  private def handleError(ex: Throwable): Unit = js.Dynamic.global.console.error(s"An error has occurred: $ex")
+  private def inConsole(obj: js.Any): Unit = js.Dynamic.global.console.info(obj)
 
 }
