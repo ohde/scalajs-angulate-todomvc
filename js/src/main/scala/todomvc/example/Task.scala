@@ -5,13 +5,15 @@ package todomvc.example
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportAll
 
-trait Task extends js.Object {
-  var id: Int = js.native
-  var title: String = js.native
-  var completed: Boolean = js.native
-}
+//trait Task extends js.Object {
+//  var id: Int = js.native
+//  var title: String = js.native
+//  var completed: Boolean = js.native
+//}
+//
+//object Task {
+//  def apply(title: String, completed: Boolean= false, id: Int = -1) : Task =
+//    js.Dynamic.literal(id=id, title=title, completed=completed).asInstanceOf[Task]
+//}
 
-object Task {
-  def apply(title: String, completed: Boolean= false, id: Int = -1) : Task =
-    js.Dynamic.literal(id=id, title=title, completed=completed).asInstanceOf[Task]
-}
+case class Task(var title: String, var completed: Boolean = false, var id: Int = -1)

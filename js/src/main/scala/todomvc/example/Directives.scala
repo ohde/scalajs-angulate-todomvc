@@ -15,7 +15,7 @@ class TodoItemDirective extends Directive {
     <div class="view">
       <input class="toggle" type="checkbox" ng-model="todo.completed"
              ng-change="fireOnChange()" />
-      <label ng-dblclick="directive.onEditStart()" ng-show="!editing">{{todo.title}}</label>
+      <label ng-dblclick="directive.onEditStart()" ng-show="!editing">{{todo.title$1}}</label>
       <button class="destroy" ng-click="fireOnRemove()"></button>
     </div>
       <form ng-submit="directive.onEditEnd()">
